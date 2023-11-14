@@ -1,0 +1,6 @@
+@Rest_Rtde_HostAddress = http://localhost:9999
+
+GET {{Rest_Rtde_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
