@@ -31,3 +31,4 @@ e:\MY_WORKSPACE\JOB\AAE\Thai_Metalex\2023\rtde_backend\Rest_Rtde\obj\Debug\net8.
 e:\MY_WORKSPACE\JOB\AAE\Thai_Metalex\2023\rtde_backend\Rest_Rtde\obj\Debug\net8.0\Rest_Rtde.pdb
 e:\MY_WORKSPACE\JOB\AAE\Thai_Metalex\2023\rtde_backend\Rest_Rtde\obj\Debug\net8.0\Rest_Rtde.genruntimeconfig.cache
 e:\MY_WORKSPACE\JOB\AAE\Thai_Metalex\2023\rtde_backend\Rest_Rtde\obj\Debug\net8.0\ref\Rest_Rtde.dll
+E:\MY_WORKSPACE\JOB\AAE\Thai_Metalex\2023\rtde_backend\Rest_Rtde\obj\Debug\net8.0\Rest_Rtde.sourcelink.json

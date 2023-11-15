@@ -208,12 +208,14 @@ namespace Ur_Rtde
         int TimeOut = 500;
         TcpClient sock = new TcpClient();
         ManualResetEvent receiveDone = new ManualResetEvent(false);
+        
 
         public uint ProtocolVersion { get; private set; }
 
         byte[] bufRecv = new byte[1500]; // Enough to hold a full OK CONTROL_PACKAGE_SETUP_OUTPUTS response
 
         public event EventHandler OnDataReceive;
+        public event EventHandler OnUpdateChart;
         public event EventHandler OnSockClosed;
 
         byte Outputs_Recipe_Id, Inputs_Recipe_Id; // from the Robot point of view
@@ -224,27 +226,41 @@ namespace Ur_Rtde
 
         public String ErrorMessage { get; private set; }
 
-        public bool Connect(String host, uint ProtocolVersion=2, int timeOut = 500)
+        public bool Connect(String host, uint ProtocolVersion = 2, int timeOut = 3000)
         {
+            if(sock.Connected){Console.WriteLine("Connected");return sock.Connected;}
             byte[] InternalbufRecv = new byte[bufRecv.Length];
             TimeOut = timeOut;
             this.ProtocolVersion = 1;
+            sock = new TcpClient();
 
             try
             {
-                sock.Connect(host, 30004);
-                sock.Client.BeginReceive(InternalbufRecv, 0, InternalbufRecv.Length, SocketFlags.None, AsynchReceive, InternalbufRecv);
+                var result = sock.BeginConnect(host, 30004, null, null);
+                bool success = result.AsyncWaitHandle.WaitOne(TimeOut, true);
+                //sock.Connect(host, 30004);
+                if (success)
+                {
+                    sock.Client.BeginReceive(InternalbufRecv, 0, InternalbufRecv.Length, SocketFlags.None, AsynchReceive, InternalbufRecv);
 
-                if (ProtocolVersion != 1)
-                    Set_UR_Protocol_Version(ProtocolVersion);
+                    
+                    if (ProtocolVersion != 1)
+                        Set_UR_Protocol_Version(ProtocolVersion);
 
-                return true;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
-            catch { return false; }
+            catch (Exception ex) { return false; }
         }
 
         private void AsynchReceive(IAsyncResult ar)
         {
+            if (!sock.Connected){Console.WriteLine(sock.Connected); return;}
             int bytesRead = sock.Client.EndReceive(ar);
             byte[] InternalbufRecv = (byte[])ar.AsyncState;
 
@@ -291,6 +307,8 @@ namespace Ur_Rtde
 
                         if (OnDataReceive != null)
                             OnDataReceive(this, null);
+                        if (OnUpdateChart != null)
+                            OnUpdateChart(this, null);
                     }
                 }
                 catch {}
@@ -300,14 +318,24 @@ namespace Ur_Rtde
                     OnSockClosed(this, null);
         }
 
-        public void Disconnect()
+        public bool Disconnect()
         {
-            try{
-                sock.Close();
+            try
+            {
+                if (sock.Connected)
+                {
+                    sock.Client.BeginDisconnect(false, AsyncDisconnect, null);
+                    return false;
+                }else{return true;}
+
             }
-            catch(Exception ex){
-                return;
-            }
+            catch (Exception ex) {return false;}
+        }
+
+        private void AsyncDisconnect(IAsyncResult ar)
+        {
+            // sock.Client.EndReceive(ar);
+            sock.Client.EndDisconnect(ar);
         }
 
         private void SendRtdePacket(RTDE_Command RTDEType, byte[] payload=null)
