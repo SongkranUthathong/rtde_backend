@@ -25,12 +25,31 @@ namespace Mycode
     [Serializable]
     public class UniversalRobot_Outputs
     {
+
+        // Preformance Data
+        public UInt32 robot_status_bits;
+        public UInt32 runtime_state;
+        public UInt32 safety_status_bits;
+        public double actual_main_voltage;
+        public double actual_robot_voltage;
+        public double actual_robot_current;
+
+        // Steaming Data
         public double[] actual_q = new double[6];
         public double[] target_q = new double[6];
 
-        public double[] joint_temperatures = new double[6];
-        public double[] actual_current = new double[6];
+        public double[] actual_qd = new double[6];
+        public double[] target_qd = new double[6];
 
+        public double[] actual_current = new double[6];
+        public double[] target_current = new double[6];
+
+        public double[] joint_temperatures = new double[6];
+        public double[] actual_joint_voltage = new double[6];
+
+        public double speed_scaling;
+
+        
     }
 
     [Serializable]
