@@ -228,7 +228,7 @@ namespace Ur_Rtde
 
         public bool Connect(String host, uint ProtocolVersion = 2, int timeOut = 3000)
         {
-            if(sock.Connected){Console.WriteLine("Connected");return sock.Connected;}
+            if(sock.Connected){;return sock.Connected;}
             byte[] InternalbufRecv = new byte[bufRecv.Length];
             TimeOut = timeOut;
             this.ProtocolVersion = 1;
@@ -260,7 +260,7 @@ namespace Ur_Rtde
 
         private void AsynchReceive(IAsyncResult ar)
         {
-            if (!sock.Connected){Console.WriteLine(sock.Connected); return;}
+            if (!sock.Connected){; return;}
             int bytesRead = sock.Client.EndReceive(ar);
             byte[] InternalbufRecv = (byte[])ar.AsyncState;
 
@@ -326,7 +326,7 @@ namespace Ur_Rtde
                 {
                     sock.Client.BeginDisconnect(false, AsyncDisconnect, null);
                     return false;
-                }else{return true;}
+                }else{return false;}
 
             }
             catch (Exception ex) {return false;}

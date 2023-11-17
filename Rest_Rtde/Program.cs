@@ -1,10 +1,8 @@
 using System.Text.Json;
 
-var rtde = new BackgroundRTED();
+var rtdeWorker = new BackgroundRTED();
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
@@ -25,38 +23,57 @@ options
     .AllowAnyHeader()
     .WithOrigins("http://192.168.1.19:8080");
 });
-
-// app.UseCors(options =>{
-//     options.WithOrigins("http://192.168.1.19:8080");
-// });
-
-
 app.UseHttpsRedirection();
 
-app.MapPost("/connect", async (IPAddress iP) => new []{
-    // Console.WriteLine( iP.ipAdd) ;
-     JsonDocument.Parse(await rtde.rtdeConnect(iP.ipAdd))
+
+#region |----------------[ Station 1 API ]--------------------|
+app.MapPost("/station1/connect",  async (resIPAdd address) => new []{
+     JsonDocument.Parse(await rtdeWorker.station1Connect(address.ipAdd))
     // new status_RTDE(await rtde.rtdeConnect("192.168.47.128"))
 });
-app.MapGet("/disconnect",async ()=> new[]{
+app.MapGet("/station1/disconnect",async ()=> new[]{
 
-    JsonDocument.Parse(await rtde.rtdeDisConnect())
+    JsonDocument.Parse(await rtdeWorker.station1Discconect())
 });
-app.MapGet("/preformance",()=> new[]{
-    JsonDocument.Parse(rtde.act_Preformance())
+app.MapGet("/station1/preformance",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station1Preformance())
 });
-app.MapGet("/steam",()=> new[]{
-    JsonDocument.Parse(rtde.act_Steaming())
+app.MapGet("/station1/steam",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station1Steam())
 });
-app.MapGet("/getConnection",()=> new[]{
-    JsonDocument.Parse(rtde.getConnection())
+app.MapGet("/station1/getConnection",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.getStation1Connection())
 });
+#endregion
+#region |----------------[ Station 2 API ]--------------------|
+app.MapPost("/station2/connect",  async (resIPAdd address) => new []{
+     JsonDocument.Parse(await rtdeWorker.station2Connect(address.ipAdd))
+    // new status_RTDE(await rtde.rtdeConnect("192.168.47.128"))
+});
+app.MapGet("/station2/disconnect",async ()=> new[]{
+
+    JsonDocument.Parse(await rtdeWorker.station2Discconect())
+});
+app.MapGet("/station2/preformance",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station2Preformance())
+});
+app.MapGet("/station2/steam",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station2Steam())
+});
+app.MapGet("/station2/getConnection",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.getStation2Connection())
+});
+#endregion
+
+
+
+
 
 app.Run();
 
-// record preformance_rtde(JsonDocument actPreformance);
-// record steam_rtde(JsonDocument actSteam);
-record IPAddress(string ipAdd);
 
+record resIPAdd(string ipAdd);
 record connection_RTDE(string connection);
 record actJ_RTED(double[] actJoint);
+
+
