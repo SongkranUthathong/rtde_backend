@@ -144,6 +144,7 @@ public class BackgroundRTED
 
     }
     private void Thread1(){
+        
         try{
             while(true){
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -178,45 +179,11 @@ public class BackgroundRTED
                 station4Connect(_st4IP);
                 station5Connect(_st5IP);
 
-                                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("|---------- RTDE STATUS --------|");
-                Console.WriteLine(
-                    "\tStation 1 : " + _st1Status + "\n"+
-                    "\tStation 2 : " + _st2Status + "\n"+
-                    "\tStation 3 : " + _st3Status + "\n"+
-                    "\tStation 4 : " + _st4Status + "\n"+
-                    "\tStation 5 : " + _st5Status
-                );
-            }
-            else if(userCommand.ToUpper() == "EA"){
-                station1Discconect();
-                station2Discconect();
-                station3Discconect();
-                station4Discconect();
-                station5Discconect();
-
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("|---------- RTDE STATUS --------|");
-                Console.WriteLine(
-                    "\tStation 1 : " + _st1Status + "\n"+
-                    "\tStation 2 : " + _st2Status + "\n"+
-                    "\tStation 3 : " + _st3Status + "\n"+
-                    "\tStation 4 : " + _st4Status + "\n"+
-                    "\tStation 5 : " + _st5Status
-                );
+                StationStatus();
             }
             else if(userCommand.ToUpper() == "LS")
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("|---------- RTDE STATUS --------|");
-                Console.WriteLine(
-                    "\tStation 1 : " + _st1Status + "\n"+
-                    "\tStation 2 : " + _st2Status + "\n"+
-                    "\tStation 3 : " + _st3Status + "\n"+
-                    "\tStation 4 : " + _st4Status + "\n"+
-                    "\tStation 5 : " + _st5Status
-                );
-                Console.WriteLine("|-------------------------------|");
+                StationStatus();
             }
            
             else{LogWarn("User","Not Command");}
@@ -296,6 +263,18 @@ public class BackgroundRTED
     string body = msg;
     string show = head + title + body;
     Console.WriteLine(show);
+    }
+    
+    private void StationStatus(){
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("|---------- RTDE STATUS --------|");
+                Console.WriteLine(
+                    "\tStation 1 (Screwing)\t["+_st1IP +"] ==>  " + _st1Status + "\n"+
+                    "\tStation 2 (Assembly)\t["+_st2IP +"] ==>  " + _st2Status + "\n"+
+                    "\tStation 3 (Inspection)\t["+_st3IP +"] ==>  " + _st3Status + "\n"+
+                    "\tStation 4 (Palletizer)\t["+_st4IP +"] ==>  " + _st4Status + "\n"+
+                    "\tStation 5 (MiR)\t["+_st5IP +"] ==>  " + _st5Status
+                );
     }
     #endregion
 

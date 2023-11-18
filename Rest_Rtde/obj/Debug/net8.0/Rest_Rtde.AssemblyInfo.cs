@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Rest_Rtde")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dac51304d6ffd48568286b32968ed134b7022921")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70c95a6f75fa5ac891280179d4192ae50a82592c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Rest_Rtde")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Rest_Rtde")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
