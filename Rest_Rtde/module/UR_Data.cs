@@ -36,13 +36,10 @@ namespace Mycode
 
         // Steaming Data
         public double[] actual_q = new double[6];
-        public double[] target_q = new double[6];
 
         public double[] actual_qd = new double[6];
-        public double[] target_qd = new double[6];
 
         public double[] actual_current = new double[6];
-        public double[] target_current = new double[6];
 
         public double[] joint_temperatures = new double[6];
         public double[] actual_joint_voltage = new double[6];

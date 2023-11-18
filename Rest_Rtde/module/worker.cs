@@ -40,55 +40,40 @@ public class BackgroundRTED
 
             st1Steam = new SteamingJson{
                 actual_q = st1UrOutputs.actual_q,
-                target_q = st1UrOutputs.target_q,
                 actual_qd = st1UrOutputs.actual_qd,
-                target_qd = st1UrOutputs.target_qd,
                 actual_current = st1UrOutputs.actual_current,
-                target_current = st1UrOutputs.target_current,
                 joint_temperatures = st1UrOutputs.joint_temperatures,
                 actual_joint_voltage = st1UrOutputs.actual_joint_voltage,
                 speed_scaling = st1UrOutputs.speed_scaling
             };
             st2Steam = new SteamingJson{
                 actual_q = st2UrOutputs.actual_q,
-                target_q = st2UrOutputs.target_q,
                 actual_qd = st2UrOutputs.actual_qd,
-                target_qd = st2UrOutputs.target_qd,
                 actual_current = st2UrOutputs.actual_current,
-                target_current = st2UrOutputs.target_current,
                 joint_temperatures = st2UrOutputs.joint_temperatures,
                 actual_joint_voltage = st2UrOutputs.actual_joint_voltage,
                 speed_scaling = st2UrOutputs.speed_scaling
             };
             st3Steam = new SteamingJson{
                 actual_q = st3UrOutputs.actual_q,
-                target_q = st3UrOutputs.target_q,
                 actual_qd = st3UrOutputs.actual_qd,
-                target_qd = st3UrOutputs.target_qd,
                 actual_current = st3UrOutputs.actual_current,
-                target_current = st3UrOutputs.target_current,
                 joint_temperatures = st3UrOutputs.joint_temperatures,
                 actual_joint_voltage = st3UrOutputs.actual_joint_voltage,
                 speed_scaling = st3UrOutputs.speed_scaling
             };
             st4Steam = new SteamingJson{
                 actual_q = st4UrOutputs.actual_q,
-                target_q = st4UrOutputs.target_q,
                 actual_qd = st4UrOutputs.actual_qd,
-                target_qd = st4UrOutputs.target_qd,
                 actual_current = st4UrOutputs.actual_current,
-                target_current = st4UrOutputs.target_current,
                 joint_temperatures = st1UrOutputs.joint_temperatures,
                 actual_joint_voltage = st1UrOutputs.actual_joint_voltage,
                 speed_scaling = st4UrOutputs.speed_scaling
             };
             st5Steam = new SteamingJson{
                 actual_q = st5UrOutputs.actual_q,
-                target_q = st5UrOutputs.target_q,
                 actual_qd = st5UrOutputs.actual_qd,
-                target_qd = st5UrOutputs.target_qd,
                 actual_current = st5UrOutputs.actual_current,
-                target_current = st5UrOutputs.target_current,
                 joint_temperatures = st5UrOutputs.joint_temperatures,
                 actual_joint_voltage = st5UrOutputs.actual_joint_voltage,
                 speed_scaling = st5UrOutputs.speed_scaling
@@ -143,7 +128,7 @@ public class BackgroundRTED
         }
 
     }
-    private void Thread1(){
+    private async void Thread1(){
         
         try{
             while(true){
@@ -178,6 +163,16 @@ public class BackgroundRTED
                 station3Connect(_st3IP);
                 station4Connect(_st4IP);
                 station5Connect(_st5IP);
+
+                StationStatus();
+            }
+        else if(userCommand.ToUpper() == "EA")
+            {
+                await station1Discconect();
+               await station2Discconect();
+               await station3Discconect();
+               await station4Discconect();
+               await station5Discconect();
 
                 StationStatus();
             }
@@ -368,11 +363,8 @@ public class BackgroundRTED
     try
     {
     st1Steam.actual_q = st1UrOutputs.actual_q;
-    st1Steam.target_q = st1UrOutputs.target_q;
     st1Steam.actual_qd = st1UrOutputs.actual_qd;
-    st1Steam.target_qd = st1UrOutputs.target_qd;
     st1Steam.actual_current = st1UrOutputs.actual_current;
-    st1Steam.target_current = st1UrOutputs.target_current;
     st1Steam.joint_temperatures = st1UrOutputs.joint_temperatures;
     st1Steam.actual_joint_voltage = st1UrOutputs.actual_joint_voltage;
     st1Steam.speed_scaling = st1UrOutputs.speed_scaling;
@@ -499,11 +491,8 @@ public class BackgroundRTED
     try
     {
     st2Steam.actual_q = st2UrOutputs.actual_q;
-    st2Steam.target_q = st2UrOutputs.target_q;
     st2Steam.actual_qd = st2UrOutputs.actual_qd;
-    st2Steam.target_qd = st2UrOutputs.target_qd;
     st2Steam.actual_current = st2UrOutputs.actual_current;
-    st2Steam.target_current = st2UrOutputs.target_current;
     st2Steam.joint_temperatures = st2UrOutputs.joint_temperatures;
     st2Steam.actual_joint_voltage = st2UrOutputs.actual_joint_voltage;
     st2Steam.speed_scaling = st2UrOutputs.speed_scaling;
@@ -633,11 +622,8 @@ public class BackgroundRTED
     try
     {
     st3Steam.actual_q = st3UrOutputs.actual_q;
-    st3Steam.target_q = st3UrOutputs.target_q;
     st3Steam.actual_qd = st3UrOutputs.actual_qd;
-    st3Steam.target_qd = st3UrOutputs.target_qd;
     st3Steam.actual_current = st3UrOutputs.actual_current;
-    st3Steam.target_current = st3UrOutputs.target_current;
     st3Steam.joint_temperatures = st3UrOutputs.joint_temperatures;
     st3Steam.actual_joint_voltage = st3UrOutputs.actual_joint_voltage;
     st3Steam.speed_scaling = st3UrOutputs.speed_scaling;
@@ -767,11 +753,8 @@ public class BackgroundRTED
     try
     {
     st4Steam.actual_q = st4UrOutputs.actual_q;
-    st4Steam.target_q = st4UrOutputs.target_q;
     st4Steam.actual_qd = st4UrOutputs.actual_qd;
-    st4Steam.target_qd = st4UrOutputs.target_qd;
     st4Steam.actual_current = st4UrOutputs.actual_current;
-    st4Steam.target_current = st4UrOutputs.target_current;
     st4Steam.joint_temperatures = st4UrOutputs.joint_temperatures;
     st4Steam.actual_joint_voltage = st4UrOutputs.actual_joint_voltage;
     st4Steam.speed_scaling = st4UrOutputs.speed_scaling;
@@ -899,11 +882,8 @@ public class BackgroundRTED
         try
         {
             st5Steam.actual_q = st5UrOutputs.actual_q;
-            st5Steam.target_q = st5UrOutputs.target_q;
             st5Steam.actual_qd = st5UrOutputs.actual_qd;
-            st5Steam.target_qd = st5UrOutputs.target_qd;
             st5Steam.actual_current = st5UrOutputs.actual_current;
-            st5Steam.target_current = st5UrOutputs.target_current;
             st5Steam.joint_temperatures = st5UrOutputs.joint_temperatures;
             st5Steam.actual_joint_voltage = st5UrOutputs.actual_joint_voltage;
             st5Steam.speed_scaling = st5UrOutputs.speed_scaling;
@@ -977,11 +957,8 @@ public class PreformanceJson
 public class SteamingJson
 {
     public double[] actual_q { get; set; } = new double[6];
-    public double[] target_q { get; set; } = new double[6];
     public double[] actual_qd { get; set; } = new double[6];
-    public double[] target_qd { get; set; } = new double[6];
     public double[] actual_current { get; set; } = new double[6];
-    public double[] target_current { get; set; } = new double[6];
     public double[] joint_temperatures { get; set; } = new double[6];
     public double[] actual_joint_voltage { get; set; } = new double[6];
     public double speed_scaling { get; set; }
