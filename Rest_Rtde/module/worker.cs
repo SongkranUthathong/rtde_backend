@@ -29,6 +29,12 @@ public class BackgroundRTED
     private PreformanceJson st4Preformance;
     private PreformanceJson st5Preformance;
 
+    private ForceTorqueJson st1ForceTorque;
+    private ForceTorqueJson st2ForceTorque;
+    private ForceTorqueJson st3ForceTorque;
+    private ForceTorqueJson st4ForceTorque;
+    private ForceTorqueJson st5ForceTorque;
+
     public BackgroundRTED()
     {
         try{
@@ -83,42 +89,71 @@ public class BackgroundRTED
                 robot_status_bits = st1UrOutputs.robot_status_bits,
                 runtime_state = st1UrOutputs.runtime_state,
                 safety_status_bits = st1UrOutputs.safety_status_bits,
-                actual_main_voltage = st1UrOutputs.actual_main_voltage,
                 actual_robot_voltage = st1UrOutputs.actual_robot_voltage,
-                actual_robot_current = st1UrOutputs.actual_robot_current          
+                actual_robot_current = st1UrOutputs.actual_robot_current,      
+                speed_scaling = st1UrOutputs.speed_scaling    
             };
             st2Preformance = new PreformanceJson{
                 robot_status_bits = st2UrOutputs.robot_status_bits,
                 runtime_state = st2UrOutputs.runtime_state,
                 safety_status_bits = st2UrOutputs.safety_status_bits,
-                actual_main_voltage = st2UrOutputs.actual_main_voltage,
                 actual_robot_voltage = st2UrOutputs.actual_robot_voltage,
-                actual_robot_current = st2UrOutputs.actual_robot_current          
+                actual_robot_current = st2UrOutputs.actual_robot_current,      
+                speed_scaling = st2UrOutputs.speed_scaling    
             };
             st3Preformance = new PreformanceJson{
                 robot_status_bits = st3UrOutputs.robot_status_bits,
                 runtime_state = st3UrOutputs.runtime_state,
                 safety_status_bits = st3UrOutputs.safety_status_bits,
-                actual_main_voltage = st3UrOutputs.actual_main_voltage,
                 actual_robot_voltage = st3UrOutputs.actual_robot_voltage,
-                actual_robot_current = st3UrOutputs.actual_robot_current          
+                actual_robot_current = st3UrOutputs.actual_robot_current,  
+                speed_scaling = st3UrOutputs.speed_scaling
             };
             st4Preformance = new PreformanceJson{
                 robot_status_bits = st4UrOutputs.robot_status_bits,
                 runtime_state = st4UrOutputs.runtime_state,
                 safety_status_bits = st4UrOutputs.safety_status_bits,
-                actual_main_voltage = st4UrOutputs.actual_main_voltage,
                 actual_robot_voltage = st4UrOutputs.actual_robot_voltage,
-                actual_robot_current = st4UrOutputs.actual_robot_current          
+                actual_robot_current = st4UrOutputs.actual_robot_current,
+                speed_scaling = st4UrOutputs.speed_scaling          
             };
             st5Preformance = new PreformanceJson{
                 robot_status_bits = st5UrOutputs.robot_status_bits,
                 runtime_state = st5UrOutputs.runtime_state,
                 safety_status_bits = st5UrOutputs.safety_status_bits,
-                actual_main_voltage = st5UrOutputs.actual_main_voltage,
                 actual_robot_voltage = st5UrOutputs.actual_robot_voltage,
-                actual_robot_current = st5UrOutputs.actual_robot_current          
+                actual_robot_current = st5UrOutputs.actual_robot_current,
+                speed_scaling = st5UrOutputs.speed_scaling
             };
+
+            
+            st1ForceTorque = new ForceTorqueJson{
+                actual_TCP_force = st1UrOutputs.actual_TCP_force,
+                tcp_force_scalar = st1UrOutputs.tcp_force_scalar,
+                speed_scaling = st1UrOutputs.speed_scaling
+            };
+            st2ForceTorque = new ForceTorqueJson{
+                actual_TCP_force = st2UrOutputs.actual_TCP_force,
+                tcp_force_scalar = st2UrOutputs.tcp_force_scalar,
+                speed_scaling = st2UrOutputs.speed_scaling
+            };
+            st3ForceTorque = new ForceTorqueJson{
+                actual_TCP_force = st3UrOutputs.actual_TCP_force,
+                tcp_force_scalar = st3UrOutputs.tcp_force_scalar,
+                speed_scaling = st3UrOutputs.speed_scaling
+            };
+            st4ForceTorque = new ForceTorqueJson{
+                actual_TCP_force = st4UrOutputs.actual_TCP_force,
+                tcp_force_scalar = st4UrOutputs.tcp_force_scalar,
+                speed_scaling = st4UrOutputs.speed_scaling
+            };
+            st5ForceTorque = new ForceTorqueJson{
+                actual_TCP_force = st5UrOutputs.actual_TCP_force,
+                tcp_force_scalar = st5UrOutputs.tcp_force_scalar,
+                speed_scaling = st5UrOutputs.speed_scaling
+            };
+
+
 
             LogMesg("Application","RTDE Server Steaming Start...");
             t1 = new Thread(new ThreadStart(Thread1));
@@ -385,9 +420,9 @@ public class BackgroundRTED
     st1Preformance.robot_status_bits = st1UrOutputs.robot_status_bits;
     st1Preformance.runtime_state = st1UrOutputs.runtime_state;
     st1Preformance.safety_status_bits = st1UrOutputs.safety_status_bits;
-    st1Preformance.actual_main_voltage = st1UrOutputs.actual_main_voltage;
     st1Preformance.actual_robot_voltage = st1UrOutputs.actual_robot_voltage;
     st1Preformance.actual_robot_current = st1UrOutputs.actual_robot_current;
+    st1Preformance.speed_scaling = st1UrOutputs.speed_scaling;
     string jsonString = JsonSerializer.Serialize(st1Preformance);
     return jsonString;
     }
@@ -398,6 +433,21 @@ public class BackgroundRTED
     return jsonString;
     }
     }
+    
+    public String station1ForceTorque(){
+        try{
+            st1ForceTorque.actual_TCP_force = st1UrOutputs.actual_TCP_force;
+            st1ForceTorque.tcp_force_scalar = st1UrOutputs.tcp_force_scalar;
+            st1ForceTorque.speed_scaling = st1UrOutputs.speed_scaling;
+            string jsonString = JsonSerializer.Serialize(st1ForceTorque);
+        return jsonString;
+        }catch(Exception ex){
+            LogError("Station 1",ex.ToString());
+            string jsonString = JsonSerializer.Serialize(st1ForceTorque);
+            return jsonString;
+        }
+    }
+    
     #endregion
 
     #region |----------------[ Station 2 : API Service ]--------------------|
@@ -513,9 +563,9 @@ public class BackgroundRTED
     st2Preformance.robot_status_bits = st2UrOutputs.robot_status_bits;
     st2Preformance.runtime_state = st2UrOutputs.runtime_state;
     st2Preformance.safety_status_bits = st2UrOutputs.safety_status_bits;
-    st2Preformance.actual_main_voltage = st2UrOutputs.actual_main_voltage;
     st2Preformance.actual_robot_voltage = st2UrOutputs.actual_robot_voltage;
     st2Preformance.actual_robot_current = st2UrOutputs.actual_robot_current;
+    st2Preformance.speed_scaling = st2UrOutputs.speed_scaling;
     string jsonString = JsonSerializer.Serialize(st2Preformance);
     return jsonString;
     }
@@ -526,6 +576,20 @@ public class BackgroundRTED
     return jsonString;
     }
     }
+        public String station2ForceTorque(){
+        try{
+            st2ForceTorque.actual_TCP_force = st2UrOutputs.actual_TCP_force;
+            st2ForceTorque.tcp_force_scalar = st2UrOutputs.tcp_force_scalar;
+            st2ForceTorque.speed_scaling = st2UrOutputs.speed_scaling;
+            string jsonString = JsonSerializer.Serialize(st2ForceTorque);
+        return jsonString;
+        }catch(Exception ex){
+            LogError("Station 1",ex.ToString());
+            string jsonString = JsonSerializer.Serialize(st2ForceTorque);
+            return jsonString;
+        }
+    }
+    
     #endregion
 
     #region |----------------[ Station 3 : API Service ]--------------------|
@@ -644,9 +708,9 @@ public class BackgroundRTED
     st3Preformance.robot_status_bits = st3UrOutputs.robot_status_bits;
     st3Preformance.runtime_state = st3UrOutputs.runtime_state;
     st3Preformance.safety_status_bits = st3UrOutputs.safety_status_bits;
-    st3Preformance.actual_main_voltage = st3UrOutputs.actual_main_voltage;
     st3Preformance.actual_robot_voltage = st3UrOutputs.actual_robot_voltage;
     st3Preformance.actual_robot_current = st3UrOutputs.actual_robot_current;
+    st3Preformance.speed_scaling = st3UrOutputs.speed_scaling;
     string jsonString = JsonSerializer.Serialize(st3Preformance);
     return jsonString;
     }
@@ -657,6 +721,22 @@ public class BackgroundRTED
     return jsonString;
     }
     }
+
+
+        public String station3ForceTorque(){
+        try{
+            st3ForceTorque.actual_TCP_force = st3UrOutputs.actual_TCP_force;
+            st3ForceTorque.tcp_force_scalar = st3UrOutputs.tcp_force_scalar;
+            st3ForceTorque.speed_scaling = st3UrOutputs.speed_scaling;
+            string jsonString = JsonSerializer.Serialize(st3ForceTorque);
+        return jsonString;
+        }catch(Exception ex){
+            LogError("Station 1",ex.ToString());
+            string jsonString = JsonSerializer.Serialize(st3ForceTorque);
+            return jsonString;
+        }
+    }
+    
     #endregion
 
     #region |----------------[ Station 4 : API Service ]--------------------|
@@ -775,9 +855,9 @@ public class BackgroundRTED
     st4Preformance.robot_status_bits = st4UrOutputs.robot_status_bits;
     st4Preformance.runtime_state = st4UrOutputs.runtime_state;
     st4Preformance.safety_status_bits = st4UrOutputs.safety_status_bits;
-    st4Preformance.actual_main_voltage = st4UrOutputs.actual_main_voltage;
     st4Preformance.actual_robot_voltage = st4UrOutputs.actual_robot_voltage;
     st4Preformance.actual_robot_current = st4UrOutputs.actual_robot_current;
+    st4Preformance.speed_scaling = st4UrOutputs.speed_scaling;
     string jsonString = JsonSerializer.Serialize(st4Preformance);
     return jsonString;
     }
@@ -788,6 +868,22 @@ public class BackgroundRTED
     return jsonString;
     }
     }
+
+        public String station4ForceTorque(){
+        try{
+            st4ForceTorque.actual_TCP_force = st4UrOutputs.actual_TCP_force;
+            st4ForceTorque.tcp_force_scalar = st4UrOutputs.tcp_force_scalar;
+            st4ForceTorque.speed_scaling = st4UrOutputs.speed_scaling;
+            string jsonString = JsonSerializer.Serialize(st4ForceTorque);
+        return jsonString;
+        }catch(Exception ex){
+            LogError("Station 1",ex.ToString());
+            string jsonString = JsonSerializer.Serialize(st4ForceTorque);
+            return jsonString;
+        }
+    }
+
+    
     #endregion
 
     #region |----------------[ Station 5 : API Service ]--------------------|
@@ -904,9 +1000,9 @@ public class BackgroundRTED
             st5Preformance.robot_status_bits = st5UrOutputs.robot_status_bits;
             st5Preformance.runtime_state = st5UrOutputs.runtime_state;
             st5Preformance.safety_status_bits = st5UrOutputs.safety_status_bits;
-            st5Preformance.actual_main_voltage = st5UrOutputs.actual_main_voltage;
             st5Preformance.actual_robot_voltage = st5UrOutputs.actual_robot_voltage;
             st5Preformance.actual_robot_current = st5UrOutputs.actual_robot_current;
+            st5Preformance.speed_scaling = st5UrOutputs.speed_scaling;
             string jsonString = JsonSerializer.Serialize(st5Preformance);
             return jsonString;
         }
@@ -914,6 +1010,20 @@ public class BackgroundRTED
         {
             LogError("Station 5",ex.ToString());
             string jsonString = JsonSerializer.Serialize(st5Preformance);
+            return jsonString;
+        }
+    }
+    
+        public String station5ForceTorque(){
+        try{
+            st5ForceTorque.actual_TCP_force = st5UrOutputs.actual_TCP_force;
+            st5ForceTorque.tcp_force_scalar = st5UrOutputs.tcp_force_scalar;
+            st5ForceTorque.speed_scaling = st5UrOutputs.speed_scaling;
+            string jsonString = JsonSerializer.Serialize(st5ForceTorque);
+        return jsonString;
+        }catch(Exception ex){
+            LogError("Station 1",ex.ToString());
+            string jsonString = JsonSerializer.Serialize(st5ForceTorque);
             return jsonString;
         }
     }
@@ -947,12 +1057,12 @@ public class BackgroundRTED
 #region Json Strcuture Data Class
 public class PreformanceJson
 {
-    public UInt32 robot_status_bits { get; set; }
-    public UInt32 runtime_state { get; set; }
-    public UInt32 safety_status_bits { get; set; }
-    public double actual_main_voltage { get; set; }
+    public uint robot_status_bits { get; set; }
+    public uint runtime_state { get; set; }
+    public uint safety_status_bits { get; set; }
     public double actual_robot_voltage { get; set; }
     public double actual_robot_current { get; set; }
+    public double speed_scaling { get; set; }
 }
 public class SteamingJson
 {
@@ -961,6 +1071,12 @@ public class SteamingJson
     public double[] actual_current { get; set; } = new double[6];
     public double[] joint_temperatures { get; set; } = new double[6];
     public double[] actual_joint_voltage { get; set; } = new double[6];
+    public double speed_scaling { get; set; }
+}
+public class ForceTorqueJson{
+    
+    public double[] actual_TCP_force { get; set; } = new double[6];
+    public double tcp_force_scalar { get; set; }
     public double speed_scaling { get; set; }
 }
 public class ConnectionJson

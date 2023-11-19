@@ -44,6 +44,9 @@ app.MapGet("/station1/steam",()=> new[]{
 app.MapGet("/station1/getConnection",()=> new[]{
     JsonDocument.Parse(rtdeWorker.getStation1Connection())
 });
+app.MapGet("/station1/forcetorque",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station1ForceTorque())
+});
 #endregion
 #region |----------------[ Station 2 API ]--------------------|
 app.MapPost("/station2/connect",  async (resIPAdd address) => new []{
@@ -62,6 +65,55 @@ app.MapGet("/station2/steam",()=> new[]{
 });
 app.MapGet("/station2/getConnection",()=> new[]{
     JsonDocument.Parse(rtdeWorker.getStation2Connection())
+});
+app.MapGet("/station2/forcetorque",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station2ForceTorque())
+});
+#endregion
+
+#region |----------------[ Station 3 API ]--------------------|
+app.MapPost("/station3/connect",  async (resIPAdd address) => new []{
+     JsonDocument.Parse(await rtdeWorker.station3Connect(address.ipAdd))
+    // new status_RTDE(await rtde.rtdeConnect("192.168.47.128"))
+});
+app.MapGet("/station3/disconnect",async ()=> new[]{
+
+    JsonDocument.Parse(await rtdeWorker.station3Discconect())
+});
+app.MapGet("/station3/preformance",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station3Preformance())
+});
+app.MapGet("/station3/steam",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station3Steam())
+});
+app.MapGet("/station3/getConnection",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.getStation3Connection())
+});
+app.MapGet("/station3/forcetorque",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station3ForceTorque())
+});
+#endregion
+
+#region |----------------[ Station 4 API ]--------------------|
+app.MapPost("/station4/connect",  async (resIPAdd address) => new []{
+     JsonDocument.Parse(await rtdeWorker.station4Connect(address.ipAdd))
+    // new status_RTDE(await rtde.rtdeConnect("192.168.47.128"))
+});
+app.MapGet("/station4/disconnect",async ()=> new[]{
+
+    JsonDocument.Parse(await rtdeWorker.station4Discconect())
+});
+app.MapGet("/station4/preformance",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station4Preformance())
+});
+app.MapGet("/station4/steam",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station4Steam())
+});
+app.MapGet("/station4/getConnection",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.getStation4Connection())
+});
+app.MapGet("/station4/forcetorque",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station4ForceTorque())
 });
 #endregion
 

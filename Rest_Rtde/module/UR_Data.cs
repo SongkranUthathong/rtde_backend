@@ -44,6 +44,9 @@ namespace Mycode
         public double[] joint_temperatures = new double[6];
         public double[] actual_joint_voltage = new double[6];
 
+        public double[] actual_TCP_force = new double[6];
+
+        public double tcp_force_scalar;
         public double speed_scaling;
 
         
