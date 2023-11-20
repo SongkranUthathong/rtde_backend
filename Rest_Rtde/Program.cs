@@ -117,6 +117,28 @@ app.MapGet("/station4/forcetorque",()=> new[]{
 });
 #endregion
 
+#region |----------------[ Station 5 API ]--------------------|
+app.MapPost("/station5/connect",  async (resIPAdd address) => new []{
+     JsonDocument.Parse(await rtdeWorker.station5Connect(address.ipAdd))
+    // new status_RTDE(await rtde.rtdeConnect("192.168.47.128"))
+});
+app.MapGet("/station5/disconnect",async ()=> new[]{
+
+    JsonDocument.Parse(await rtdeWorker.station5Discconect())
+});
+app.MapGet("/station5/preformance",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station5Preformance())
+});
+app.MapGet("/station5/steam",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station5Steam())
+});
+app.MapGet("/station5/getConnection",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.getStation5Connection())
+});
+app.MapGet("/station5/forcetorque",()=> new[]{
+    JsonDocument.Parse(rtdeWorker.station5ForceTorque())
+});
+#endregion
 
 
 

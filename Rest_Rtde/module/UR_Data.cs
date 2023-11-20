@@ -48,6 +48,8 @@ namespace Mycode
 
         public double tcp_force_scalar;
         public double speed_scaling;
+        
+        public double timestamp;
 
         
     }

@@ -1,11 +1,13 @@
 using Ur_Rtde;
 using Mycode;
+using System.Diagnostics;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
 public class BackgroundRTED
 {
     Thread t1;
+    Thread t2;
     public static RtdeClient st1RtdeClient;
     public static RtdeClient st2RtdeClient;
     public static RtdeClient st3RtdeClient;
@@ -152,27 +154,67 @@ public class BackgroundRTED
                 tcp_force_scalar = st5UrOutputs.tcp_force_scalar,
                 speed_scaling = st5UrOutputs.speed_scaling
             };
+            
 
 
 
             LogMesg("Application","RTDE Server Steaming Start...");
             t1 = new Thread(new ThreadStart(Thread1));
             t1.Start();
+            t2 = new Thread(new ThreadStart(Thread2));
+            t2.Start();
+
         }catch(Exception ex){
             LogError("sysyem",ex.ToString());
         }
 
     }
+        static void RunNodeScript(string nodePath, string scriptPath)
+        {
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = nodePath;
+                process.StartInfo.Arguments = scriptPath;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.Start();
+
+                string output = process.StandardOutput.ReadToEnd();
+                Console.WriteLine(output);
+
+                process.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+            }
+        }
+        private async void Thread2(){
+            try{
+                                    string nodePath = "node"; // Replace this with the path to your Node.js executable if it's not in the system PATH
+            string scriptPath = "E:/MY_WORKSPACE/JOB/AAE/Thai_Metalex/2023/thesis_fontend/server.js"; // Replace this with the path to your Node.js script
+
+            RunNodeScript(nodePath, scriptPath);
+            }catch(Exception ex){
+
+            }
+        }
     private async void Thread1(){
         
         try{
+
             while(true){
-                Console.ForegroundColor = ConsoleColor.Blue;
+
+
+                
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("+-----------------------------------------------------------+");
             Console.WriteLine("\t\tStart & Stop RTDE\n S1 is Start RTDE Station1 | E1 is End RTDE Station1 | ls show status");
             string userCommand = Console.ReadLine();
 
-            if(userCommand.ToUpper() == "S1"){station1Connect(_st1IP);}
+            if(userCommand.ToUpper() == "S1"){station1Connect(_st1IP);
+            }
 
             else if(userCommand.ToUpper() == "E1"){station1Discconect();}
 
@@ -188,7 +230,10 @@ public class BackgroundRTED
 
             else if(userCommand.ToUpper() == "E4"){station4Discconect();}
 
-            else if(userCommand.ToUpper() == "S5"){station5Connect(_st5IP);}
+            else if(userCommand.ToUpper() == "S5")
+            {
+                    station5Connect(_st5IP);    
+            }
 
             else if(userCommand.ToUpper() == "E5"){station5Discconect();}
             else if(userCommand.ToUpper() == "SA")
@@ -203,7 +248,7 @@ public class BackgroundRTED
             }
         else if(userCommand.ToUpper() == "EA")
             {
-                await station1Discconect();
+               await station1Discconect();
                await station2Discconect();
                await station3Discconect();
                await station4Discconect();
@@ -221,6 +266,8 @@ public class BackgroundRTED
             // Console.Clear();
             LogMesg("User",userCommand);
             // Console.WriteLine("+-----------------------------------------------------------+");
+            //Reconnection
+
             Thread.Sleep(100);
             }
 
@@ -241,11 +288,11 @@ public class BackgroundRTED
 
 
     // Statatic
-    private static string _st1IP = "192.168.47.128";
-    private static string _st2IP = "192.168.47.130";
-    private static string _st3IP = "127.0.0.1";
-    private static string _st4IP = "127.0.0.1";
-    private static string _st5IP = "127.0.0.1";
+    private static string _st1IP = "192.168.1.111";
+    private static string _st2IP = "192.168.1.112";
+    private static string _st3IP = "192.168.1.113";
+    private static string _st4IP = "192.168.1.114";
+    private static string _st5IP = "192.168.47.128";
     private static bool _st1Status = false;
     private static bool _st2Status = false;
     private static bool _st3Status = false;
@@ -893,7 +940,7 @@ public class BackgroundRTED
     {
         try
         {
-            if (_st4Status)
+            if (_st5Status)
             {
                 LogWarn("Station 5 ","RTDE is running !");
                 var connection = new ConnectionJson{status = _st5Status,ip = _st5IP};
@@ -909,6 +956,7 @@ public class BackgroundRTED
             {
                 st5RtdeClient.Setup_Ur_Outputs(st5UrOutputs, 100);
                 st5RtdeClient.OnDataReceive += Station5_OnDataReceive;
+                st5RtdeClient.OnSockClosed += Station5_OnSockClosed;
                 st5RtdeClient.Ur_ControlStart();
 
                 var connection = new ConnectionJson{status = _st5Status,ip = _st5IP};
@@ -935,7 +983,11 @@ public class BackgroundRTED
         }
     }
 
+    private void Station5_OnSockClosed(object? sender, EventArgs e)
+    {
+        Console.WriteLine("AAAAADDD");
 
+    }
 
     public async Task<string> station5Discconect(){
         try
@@ -1027,6 +1079,19 @@ public class BackgroundRTED
             return jsonString;
         }
     }
+   
+   private double[] Stationtimestamp(){
+    double[] _timestmp = new double[6];
+    try{
+        _timestmp = [st1UrOutputs.timestamp,st2UrOutputs.timestamp,st3UrOutputs.timestamp,st5UrOutputs.timestamp];
+        return _timestmp;
+    }
+    catch(Exception ex){
+        return _timestmp;
+    }
+   }
+   
+   
     #endregion
     
     private void Station1_OnDataReceive(object? sender, EventArgs e)
@@ -1048,7 +1113,8 @@ public class BackgroundRTED
     }
         private void Station5_OnDataReceive(object? sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        // Console.WriteLine(st5UrOutputs.Equals(st5UrOutputs));
+        // _st5Status = st5UrOutputs.Equals(st5UrOutputs);
     }
 
 }
